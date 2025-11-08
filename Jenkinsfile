@@ -9,6 +9,7 @@ pipeline {
                 }
             }
             steps {
+                cleaWs()
                 sh '''
                     ls -la
                     node --version
