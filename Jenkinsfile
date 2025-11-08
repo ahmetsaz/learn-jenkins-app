@@ -6,49 +6,65 @@ pipeline {
     stages {
         stage('Parallel') {
             parallel {
-                stage("Build") {
-                    agent {
-                        docker {
-                            image 'node:18-alpine'
-                            reuseNode true
-                        }
-                    }
-                    steps {
-                        sh '''
-                            ls -la
-                            node --version
-                            npm --version
-                            npm cache clean --force
-                            npm ci
-                            npm run build
-                            ls -la
-                        '''
-                    }
-                }
-                stage("Npm Test") {
-                    agent {
-                        docker {
-                            image 'node:18-alpine'
-                            reuseNode true
-                        }
-                    }
-                    steps {
-                        
-                        sh '''
-                            test -f build/index.html
-                            npm test 
-                        '''
 
+                stage("Hello") {
+                    steps {
+                        sh '''
+                            echo "Hello World"
+                        '''
                     }
-                     post{
-                        always{
-                            junit 'test-results/junit.xml'
-                        }
+
                 }
-                }
+                stage("Merhaba") {
+                    steps {
+                        sh '''
+                            echo "Merhaba Dünya"
+                        '''
+                    }
+
+                }                
                 
             }
         }
-    }
+        stage("Build") {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    ls -la
+                    node --version
+                    npm --version
+                    npm cache clean --force
+                    npm ci
+                    npm run build
+                    ls -la
+                '''
+            }
+        }
+        stage("Npm Test") {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                
+                sh '''
+                    test -f build/index.html
+                    npm test 
+                '''
 
+            }
+        }
+    }
+    post{
+        always{
+           junit 'test-results/junit.xml'
+        }
+    }
 }
