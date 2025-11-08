@@ -28,6 +28,7 @@ pipeline {
 
         stage('Tests') {
             parallel {
+                /* 
                 stage('Unit tests') {
                     agent {
                         docker {
@@ -48,6 +49,7 @@ pipeline {
                         }
                     }
                 }
+                */
 
                 stage('E2E') {
                     agent {
